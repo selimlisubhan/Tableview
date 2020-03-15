@@ -18,6 +18,7 @@ public class Main extends Application {
 
     TableView<Product> table;
     TextField idInput, nameInput, priceInput, qtyInput;
+    Label label;
 
     ObservableList<Product> products = FXCollections.observableArrayList();
 
@@ -81,13 +82,15 @@ public class Main extends Application {
         Button deleteButton = new Button("DELETE");
         deleteButton.setOnAction(e -> deleteButtonClick());
 
+        label = new Label();
+
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10));
         hBox.setSpacing(10);
         hBox.getChildren().addAll(idInput, nameInput, priceInput, qtyInput, addButton, deleteButton);
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(table, hBox);
+        vbox.getChildren().addAll(table, hBox, label);
 
 
         Scene scene = new Scene(vbox);
@@ -97,25 +100,32 @@ public class Main extends Application {
 
     // Add or update product AddButton clicked
     private void addOrUpdateButtonClick() {
-        int id = Integer.parseInt(idInput.getText());
-        int size = table.getItems().filtered(p -> p.getId() == id)
-                .size();
+        try {
+            int id = Integer.parseInt(idInput.getText());
+            int size = table.getItems().filtered(p -> p.getId() == id)
+                    .size();
 
-        if (size > 0) {
-            Product product = new Product(id, nameInput.getText(),
-                    new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
-            products.remove(id - 1);
-            products.add(id - 1, product);
-        } else {
-            Product product = new Product(nameInput.getText(),
-                    new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
-            products.add(product);
+            if (size > 0) {
+                Product product = new Product(id, nameInput.getText(),
+                        new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
+                products.remove(id - 1);
+                products.add(id - 1, product);
+            } else {
+                Product product = new Product(nameInput.getText(),
+                        new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
+                products.add(product);
+            }
+            idInput.clear();
+            nameInput.clear();
+            priceInput.clear();
+            qtyInput.clear();
+        } catch (Exception e){
+            label.setText("There is a problem. Please check inputs");
+            label.setStyle("-fx-font-size:14px; -fx-text-fill: red;");
+            e.printStackTrace();
         }
 
-        idInput.clear();
-        nameInput.clear();
-        priceInput.clear();
-        qtyInput.clear();
+
     }
 
     // delete product DeleteButton clicked
