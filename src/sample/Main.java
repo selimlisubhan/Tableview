@@ -95,7 +95,7 @@ public class Main extends Application {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
-                if (!newValue.matches("\\d*")) {
+                if (!newValue.matches("\\d*") && !newValue.contains(".")) {
                     priceInput.setText(newValue.replaceAll("[^\\d]", ""));
                     label.setText("There is a problem. Price is not number");
                 } else {
