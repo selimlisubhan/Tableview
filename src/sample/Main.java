@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -75,6 +77,47 @@ public class Main extends Application {
         qtyInput.setPromptText("Qty");
         qtyInput.setMinWidth(100);
 
+
+        idInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    idInput.setText(newValue.replaceAll("[^\\d]", ""));
+                    label.setText("There is a problem. Id is not number");
+                } else {
+                    label.setText("");
+                }
+            }
+        });
+
+        priceInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    priceInput.setText(newValue.replaceAll("[^\\d]", ""));
+                    label.setText("There is a problem. Price is not number");
+                } else {
+                    label.setText("");
+                }
+            }
+        });
+
+        qtyInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    qtyInput.setText(newValue.replaceAll("[^\\d]", ""));
+                    label.setText("There is a problem. Quantity is not number");
+                } else {
+                    label.setText("");
+                }
+            }
+        });
+
+
         // Buttons
         Button addButton = new Button("ADD/UPDATE");
         addButton.setOnAction(e -> addOrUpdateButtonClick());
@@ -100,6 +143,7 @@ public class Main extends Application {
 
     // Add or update product AddButton clicked
     private void addOrUpdateButtonClick() {
+
         try {
             int id = Integer.parseInt(idInput.getText());
             int size = table.getItems().filtered(p -> p.getId() == id)
@@ -123,8 +167,8 @@ public class Main extends Application {
             priceInput.clear();
             qtyInput.clear();
         } catch (Exception e){
-            label.setText("There is a problem. Please check inputs");
             label.setStyle("-fx-font-size:14px; -fx-text-fill: red;");
+            label.setText("There is a problem. Please check inputs");
             e.printStackTrace();
         }
 
@@ -159,4 +203,6 @@ public class Main extends Application {
         products.add(new Product("Lenovo", BigDecimal.valueOf(1225.25), 12));
         return products;
     }
+
+
 }
