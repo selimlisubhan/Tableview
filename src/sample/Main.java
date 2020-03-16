@@ -110,11 +110,14 @@ public class Main extends Application {
                         new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
                 products.remove(id - 1);
                 products.add(id - 1, product);
+                label.setText("Product Update is successfuly");
             } else {
                 Product product = new Product(nameInput.getText(),
                         new BigDecimal(priceInput.getText()), Integer.valueOf(qtyInput.getText()));
                 products.add(product);
+                label.setText("Product Add is successfuly");
             }
+            label.setStyle("-fx-font-size:14px; -fx-text-fill: green;");
             idInput.clear();
             nameInput.clear();
             priceInput.clear();
